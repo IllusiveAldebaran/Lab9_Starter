@@ -5,6 +5,6 @@
 The image for tracking:
 
 
-[image](./TrackJS.png)
+![image](./TrackJS.png)
 
 I had the ad blocker on...
