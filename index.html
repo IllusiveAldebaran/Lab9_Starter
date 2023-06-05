@@ -94,6 +94,7 @@
       <button>Trigger a Global Error</button>
       <button>Try Catch button</button>
       <button>Custom Error</button>
+      <button>Send an error to Track.js</button>
     </section>
   </main>
 
@@ -396,9 +397,17 @@
     }
 
     /***** Final part *********/
-    // I guess this is to manually check it is tracking? Let's see this
-    throw new Error("Howdy this is an untracked Error");
-    TrackJS.track('Testing TrackJS!');
+
+    errorBtns[16].addEventListener("click", (e) => {
+      try {
+
+        // I guess this is to manually check it is tracking? Let's see this
+        throw new Error("Howdy this is an untracked Error");
+      } catch (err) {
+        TrackJS.track(err);
+      }
+    });
+
                         
   </script>
 </body>
