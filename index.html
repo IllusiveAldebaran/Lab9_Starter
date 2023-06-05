@@ -84,6 +84,8 @@
       <button>End Timer</button>
       <button>Console Trace</button>
       <button>Trigger a Global Error</button>
+      <button>Try Catch button</button>
+      <button>Custom Error</button>
     </section>
   </main>
 
@@ -102,6 +104,288 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    const label1 = 'Example Labeling';
+    const label2 = 'Nested example';
+
+
+    errorBtns[0].addEventListener("click", (e) => {
+      console.log("Hi from the console log\n This message has been logged onto the console");
+    })
+
+    errorBtns[1].addEventListener("click", (e) => {
+      let myObj = "two";
+      console.error("sorry but error time");
+      console.error(myObj);
+    })
+
+    errorBtns[2].addEventListener("click", (e) => {
+      console.count('var1');
+      console.count('var2');
+      console.count('var1');
+      console.count('var1');
+
+      // can reset with:
+      //console.countReset();
+      // (default not created so this will fail)
+    })
+
+    errorBtns[3].addEventListener("click", (e) => {
+      console.warn('Eyo, this is a warning');
+    })
+
+    errorBtns[4].addEventListener("click", (e) => {
+      let bool = false;
+      const reason = 'The bool is false';
+      console.assert(reason, {bool, reason});
+      bool = true;
+      console.assert(reason, {bool, reason});
+    })
+
+    // clears console output
+    errorBtns[5].addEventListener("click", (e) => {
+      console.clear();
+    })
+
+    // Give  out shape of oobject as json
+    errorBtns[6].addEventListener("click", (e) => {
+      // give out a json of an obj
+      console.dir(document.body);
+    })
+
+    // Give  out shape of oobject as xml (similar to above)
+    errorBtns[7].addEventListener("click", (e) => {
+      // give out a json of an obj
+      console.dirxml(document.body);
+    })
+
+    // Start grouping messages
+    errorBtns[8].addEventListener("click", (e) => {
+
+      //FIXME This button can be clicked multiple time and create a hellscape
+      console.group(label1);
+      //console.groupCollapsed(label1) // same as above, but collapsed
+      console.info('Leo'); // "identical to console.log" -- chrome documentation
+      console.info('Mike');
+      console.info('Don');// the ninja turles I'm dead 
+      console.info('Raph');
+      console.groupCollapsed(label2);
+      console.info('bruh moment');
+      console.info('What are those!');
+    })
+
+    // Put an end to grouping messages! Stop this suffering!
+    errorBtns[9].addEventListener("click", (e) => {
+      console.groupEnd(label2);
+      console.groupEnd(label1);
+    });
+
+
+    // Show a javascript array as a file
+    errorBtns[10].addEventListener("click", (e) => {
+      let show31minutos = [
+        {
+          first: 'carlos',
+          last: 'bodoque',
+        },
+        {
+          first: 'calcetin',
+          last: 'con rombos man',
+          code: '1020203',
+        },
+        {
+          first: 'tulio',
+          last: 'nose',
+        },
+        {
+          first: 'senor',
+          last: 'mangera',
+        }
+      ];
+      console.table(show31minutos);
+      // to just see their first names
+      console.table(show31minutos, ['first']);
+      //console.table(show32minutos, ['first', 'last']);
+    });
+    // Start a timer
+    errorBtns[11].addEventListener("click", (e) => {
+      console.time();
+    });
+
+    // End the timer
+    errorBtns[12].addEventListener("click", (e) => {
+      console.timeEnd();
+    })
+
+    // show trace, the functions called
+    errorBtns[13].addEventListener("click", (e) => {
+      const first = () => { second(); };
+      const second = () => { third(); };
+      const third = () => { secret(); fourth(); };
+      const fourth = () => { console.trace(); };
+      const secret = () => { console.log('alternative function to show functionality'); };
+      first();
+    })
+
+    // trigger a global error
+    errorBtns[14].addEventListener("click", (e) => {
+      //swap, forgot to set y
+      let x = 3;
+      let temp = x;
+      x = y;
+      y = x;
+      console.log(x);
+      console.log(y);
+    });
+
+    /****** SHOWING STEP 3 *********/
+
+    // trigger a global error
+    errorBtns[15].addEventListener("click", (e) => {
+      // Just demoing try, catch, finally
+      setTimeout(function() {
+        try {
+          runArithmetic(); // has an error that is handled internally
+          runArithmetic2();// has an error that is not handled, but caught here
+        } catch (err) {
+          console.error(err);
+          console.log("Error handled by outside try-catch block"); // uh oh
+        }
+      }, 1000);
+    });
+
+    /****** SHOWING STEP 3 *********/
+    
+    // creaitng an error class, extending Error 
+    class BadTorrentInfo extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "BadTorrentInfo"; // (2)
+      }
+    }
+
+    // Usage
+    function readUser(json) {
+
+      let tr1 = JSON.parse(json);
+
+      if (!tr1.checksum) {
+        throw new BadTorrentInfo("No checksum to validate torrent");
+      }
+      if (tr1.seeding == 'true' && tr1.downloaded == 'false') {
+        throw new BadTorrentInfo("Trying to seed without having completed download"); // pretty sure this is false btw
+      }
+
+      return tr1;
+    }
+
+    // trigger a global error
+    errorBtns[16].addEventListener("click", (e) => {
+      let archlinux;
+      try {
+
+        let json1 = `{ "name": "Archlinux.6.2.1.torrent", "checksum": "abb32b4b439f92bf", "seeding":"true", "downloaded": "false"  }`;
+        archlinux = readUser(json1);
+
+      } catch (err) {
+        if (err instanceof BadTorrentInfo) {
+          console.log("Torrent information bad");
+          console.warn(err);
+        } else {
+          throw err; // yeah this can't be handled
+        }
+      }
+    });
+    
+
+
+
+    /******* Parts of previous stuff *********/
+
+    function runArithmetic() {
+      let a = 15;
+      let b = 10;
+      let result;
+      // Just trying to give information on our time and failing
+      try {
+        // lets try some basic arithmetic
+        result = a + b;
+        console.log(result);
+        result = a - b;
+        console.log(result);
+
+        b = 0;
+        result = a / b;
+        console.log(result);
+        result = Math.pow(a,result); // this somehow works
+        console.log(result);
+
+
+        b = Math.sqrt(-1);
+        result = a * b;
+        console.log(result);
+
+
+        // swap them
+        //let 1temp = b; // This would be a parse time error I did earlier,
+
+
+          /***** Gives an error *******/
+
+          if( isNaN(result) ) {
+            let mathError = new Error("That is not a number!");
+            //console.log(mathError);
+            mathError.name = "MathError";
+            //console.log(mathError);
+            throw mathError;
+          }
+
+
+      } catch (err) {
+        if (err instanceof SyntaxError) {
+          console.error(err);
+        } else if (err.name == 'MathError') {
+          console.log(err); //not showing stack by using console.log
+        } else {
+          throw err; 
+        }
+        console.log("error handled internally!");
+
+      } finally {
+        console.log('Ran some arithmetic!');
+      }
+
+    }
+
+    function runArithmetic2() {
+      let a = 15;
+      let b = 10;
+      let result;
+      // Just trying to give information on our time and failing
+      try {
+
+        // swap them
+        //let 1temp = b; // This would be a parse time error I did earlier,
+          let           /***** Gives an error in this example *******/
+
+          if( isNaN(result) ) {
+            throw new Error("That is not a number!");
+          }
+
+
+      } catch (err) {
+        if (err instanceof SyntaxError) {
+          console.error(err);
+        } else if (err.name == 'MathError') {
+          console.log(err); //not showing stack by using console.log
+        } else {
+          throw err; 
+        }
+        console.log("error handled internally!");
+      } finally {
+        console.log('Ran some arithmetic!');
+      }
+
+    }
   </script>
 </body>
 
