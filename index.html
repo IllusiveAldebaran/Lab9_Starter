@@ -5,6 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "df34d4d2ce074f2093515287b35fd7e8"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <title>Lab 9</title>
 
   <style>
@@ -386,6 +394,12 @@
       }
 
     }
+
+    /***** Final part *********/
+    // I guess this is to manually check it is tracking? Let's see this
+    throw new Error("Howdy this is an untracked Error");
+    TrackJS.track('Testing TrackJS!');
+                        
   </script>
 </body>
 
