@@ -404,6 +404,8 @@
         // I guess this is to manually check it is tracking? Let's see this
         throw new Error("Howdy this is an untracked Error");
       } catch (err) {
+        console.log("Sending error to TrackJS");
+        console.error(err);
         TrackJS.track(err);
       }
     });
