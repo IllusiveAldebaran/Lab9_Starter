@@ -94,7 +94,8 @@
       <button>Trigger a Global Error</button>
       <button>Try Catch button</button>
       <button>Custom Error</button>
-      <button>Send an error to Track.js</button>
+      <button>Send an error to Track.js manually (handle locally)</button>
+      <button>Send an error to Track.js (automatic, unhandled)</button>
     </section>
   </main>
 
@@ -398,18 +399,27 @@
 
     /***** Final part *********/
 
-    errorBtns[16].addEventListener("click", (e) => {
+    // I throw the error manually
+    errorBtns[17].addEventListener("click", (e) => {
       try {
-
         // I guess this is to manually check it is tracking? Let's see this
         throw new Error("Howdy this is an untracked Error");
       } catch (err) {
         console.log("Sending error to TrackJS");
         console.error(err);
-        TrackJS.track(err);
+        TrackJS.track(err); // manually send an error to it
       }
     });
 
+    // have an error that TrackJS handles automatically
+    errorBtns[18].addEventListener("click", (e) => {
+      throw new Error("Howdy this is an untracked Error");
+    });
+
+    // trying to add a global Error handler. Seems that something like this is injected and not necessary, huh
+    //window.onerror = function(msg, url, line, col, error) {
+    //  console.log(error);
+    //}
                         
   </script>
 </body>
